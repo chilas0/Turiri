@@ -1,0 +1,15 @@
+{
+  "name": "turiri",
+  "version": "0.0.1",
+  "description": "Turiri_trips",
+  "main": "index.js",
+  "author": "Antony Abarca Zúñiga",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "moongose": "^1.0.0"
+  }
+}
