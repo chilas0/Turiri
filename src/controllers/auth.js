@@ -66,9 +66,30 @@ async function login(req, res){
     
 }   
 
+async function refreshAccessToken(req, res){
+
+    await connectDB();
+    const { token } = req.body;
+    
+    if(!token){
+        res.status(400).send({msg: "Token required"})
+    }
+    const { user_id } = jwt.decoded(token);
+    console.log(user_id)
+    const result =  await User.find({ _id: user_id });
+
+    if(!result){
+        res.status(500).send({msg: "Error del servidor"})
+    }else{
+        res.status(200).send({
+            accessToken: jwt.createAccessToken(result)
+        });
+    }
+}
 
 module.exports = {
     register,
     login,
+    refreshAccessToken,
 }
 
