@@ -7,18 +7,19 @@ const jwt = require("../utils/jwt");
 async function register(req, res){
     try {
         await connectDB();
-        const { name, email, password } = req.body;
+        const { firstname, email, password } = req.body;
+
+        //Encripta la contraseña 
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(password, salt);
+
         const user = new User({
-            name,
+            ...req.body,
             email: email.toLowerCase(), 
-            password
+            password: hashPassword,
+            active: true
     });
 
-    //Encripta la contraseña 
-    const salt = bcrypt.genSaltSync(10);
-    const hashPassword = bcrypt.hashSync(password, salt);
-    user.password = hashPassword;
-        
         const result =  await User.create(user);
         res.status(200).send({msg: result})
     } catch (error) {

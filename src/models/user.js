@@ -3,11 +3,18 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
-    name:{
+    firstname:{
         type: String,
         trim: true,
         require: [true, 'Please add a name'],
     },
+    lastname:{
+        type: String,
+        trim: true,
+        require: [true, 'Please add a name'],
+    },
+    telephone: String,
+    idCard: String,
     email: {
         type: String,
         required: true,
@@ -20,7 +27,10 @@ const UserSchema = new mongoose.Schema({
         require: [true, 'Please set a password'],
         minLength: 6
         //select: false
-    }
+    },
+    role: String,
+    active: Boolean,
+    avatar: String,
 });
 
 /*UserSchema.pre('save', async function(next){
