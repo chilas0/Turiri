@@ -1,7 +1,10 @@
+//Start imports 
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs')
+/*const bcrypt = require('bcryptjs');*/
+//End imports 
 
+//Start user model
 const UserSchema = new mongoose.Schema({
     firstname:{
         type: String,
@@ -26,12 +29,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         require: [true, 'Please set a password'],
         minLength: 6
-        //select: false
     },
     role: String,
     active: Boolean,
     avatar: String,
 });
+//End user model
 
 /*UserSchema.pre('save', async function(next){
     this.password = bcrypt.hashSync(this.password, 10);
