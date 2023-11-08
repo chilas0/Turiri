@@ -9,9 +9,9 @@ const {
     DB_COLLECTION
 } = require("./constans");
 
-module.exports = connectDatabase = async() => {
+module.exports = connectDatabase => {
     if(conn == null){
-        conn = await mongoose.connect(
+        conn = mongoose.connect(
             `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_COLLECTION}`);
         return conn;
     }

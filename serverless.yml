@@ -13,24 +13,24 @@ provider:
  
 
 functions:
-  createUser:
-    handler: src/handlers/createUser.handler
-    events:
-      - httpApi:
-          path: /users
-          method: POST
-  getAll:
-    handler: src/handlers/getAll.handler
-    events:
-      - httpApi:
-          path: /users
-          method: GET
-  getUser:
-    handler: src/handlers/getUser.handler
-    events:
-      - httpApi:
-          path: /users/{email}
-          method: GET
+  # createUser:
+  #   handler: src/handlers/createUser.handler
+  #   events:
+  #     - httpApi:
+  #         path: /users
+  #         method: POST
+  # getAll:
+  #   handler: src/handlers/getAll.handler
+  #   events:
+  #     - httpApi:
+  #         path: /users
+  #         method: GET
+  # getUser:
+  #   handler: src/handlers/getUser.handler
+  #   events:
+  #     - httpApi:
+  #         path: /users/{email}
+  #         method: GET
           
   api:
     handler: index.handler

@@ -6,36 +6,51 @@ const jwt = require("../utils/jwt");
 //End imports
 
 //Start register function 
-/**async function register(req, res){
+  function register(req, res){
     try {
-        await connectDB();
-        const { firstname, email, password } = req.body;
+         connectDB();
+        const { email, password } = req.body;
+
         const salt = bcrypt.genSaltSync(10);
         const hashPassword = bcrypt.hashSync(password, salt);
+
         const user = new User({
             ...req.body,
             email: email.toLowerCase(), 
             password: hashPassword,
             active: true
     });
-        const result =  await User.create(user);
+        const result =   User.create(user);
+        console.log(result)
         res.status(200).send({msg: result})
+        //  user.save((error, userStorage) => {
+        //     if(error){
+        //         res.status(400).send({msg: "Error al crear usuario"});
+        //     }else{
+        //         res.status(200).send(userStorage);
+        //     }
+        // });
+        
     } catch (error) {
         console.error(error);
         res.status(500).send({msg: "error",error})
     }
-}*/
+}
 //End register function
 
 //Start login function
 async function login(req, res){
     try {
+
         await connectDB();
         const { email, password } = req.body;
+
         if(!email) res.status(400).send({msg: "The email is required"});
         if(!password) res.status(400).send({msg: "The password is required"});
+
         const emailLowerCase = email.toLowerCase();
-        const result = await User.findOne({email: emailLowerCase})
+        const result = await User.findOne({email: emailLowerCase});
+
         if(!result){
             //If the user not found 
             res.status(400).send({msg: "User not found"})
@@ -59,7 +74,7 @@ async function login(req, res){
             });
         }
     } catch (error) {
-        res.status(500).send({msg: "error",error})
+        res.status(500).send({msg: "errohhr",error})
     }
 }  
 //End login function 
@@ -85,7 +100,7 @@ async function refreshAccessToken(req, res){
 
 //Exports
 module.exports = {
-    //register,
+    register,
     login,
     refreshAccessToken,
 }

@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     firstname:{
         type: String,
         trim: true,
-        require: [true, 'Please add a name'],
+        required: [true, 'Please add a name'],
     },
     lastname:{
         type: String,
@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     idCard: String,
     email: {
         type: String,
-        required: true,
+        require: true,
         unique: true,
         validate: [validator.isEmail, "Entered email is invalid..."],
     },
@@ -40,4 +40,4 @@ const UserSchema = new mongoose.Schema({
     this.password = bcrypt.hashSync(this.password, 10);
     next();
 })*/
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Users', UserSchema);
