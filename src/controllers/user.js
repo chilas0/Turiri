@@ -1,34 +1,61 @@
 const bcrypt = require("bcryptjs")
 const connectDB = require('../database/db');
-const User = require("../models/user")
+const User = require("../models/user");
+const { response } = require("express");
 
-async function getMe(req, res){
-    await connectDB();
+ function getMe(req, res){
+     connectDB();
     const { user_id } = req.user;
-    const response = await User.findById(user_id)
+    userObj =  User.findById(user_id).lean();
 
-    if(!response){
-        res.status(400).send({msg: "User not found"})
+    if(userObj){
+        return {
+            statusCode:200,
+            body: JSON.stringify(userObj)
+        }
     }else{
-        res.status(200).send(response)
+        return {
+            statusCode:404,
+            body: JSON.stringify({error: "Requested resource is not found in the database"})
+        }
     }
 }
 
-async function getUsers(req, res){
+
+
+//  async function getUsers(req, res) {
+//     await connectDB();
+//     const { active } = req.query;
+//     let response = null;
+  
+//     if(active == undefined){
+//                 response = await User.find();
+//             }else{
+//                 response = await User.find({active});
+//             }
+//             console.log(response)
+//             res.status(200).send(response)
+    
+// }
+
+async function getUsers(req, res) {
     await connectDB();
     const { active } = req.query;
-    let response = null;
-
-    if(active == undefined){
-        response = await User.find();
-    }else{
-        response = await User.find({active});
-    }
-    res.status(200).send(response)
+  
+    let query = active === undefined ? await User.find() : await User.find({ active });
+  
+    query.lean()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
 }
+  
 
-async function createUser(req, res){
-    await connectDB();
+function createUser(req, res){
+     connectDB();
     const { password } = req.body;
     const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(password, salt);
@@ -43,7 +70,7 @@ async function createUser(req, res){
         password: hashPassword
     });
 
-    const response = await User.create(user);
+    const response =  User.create(user);
     if(!response){
         res.status(500).send({msg: "error"})
     }else{
@@ -51,8 +78,8 @@ async function createUser(req, res){
     }
 }
 
-async function updateUser(req, res){
-    await connectDB();
+ function updateUser(req, res){
+     connectDB();
     const { id } = req.params;
     const userData = req.body;
 
@@ -63,7 +90,7 @@ async function updateUser(req, res){
     }else{
         delete userData.password;
     }
-    const response = await User.findOneAndUpdate({_id: id},userData);
+    const response =  User.findOneAndUpdate({_id: id},userData, { new: true });
     if(!response){
         res.status(500).send({msg: "error"})
     }else{

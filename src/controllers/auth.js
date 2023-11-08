@@ -4,10 +4,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("../utils/jwt");
 
 
-async function register(req, res){
+ function register(req, res){
     try {
-        await connectDB();
-        const { firstname, email, password } = req.body;
+         connectDB();
+        const {  email, password } = req.body;
 
         //Encripta la contraseña 
         const salt = bcrypt.genSaltSync(10);
@@ -20,7 +20,7 @@ async function register(req, res){
             active: true
     });
 
-        const result =  await User.create(user);
+        const result =   User.create(user);
         res.status(200).send({msg: result})
     } catch (error) {
         console.error(error);

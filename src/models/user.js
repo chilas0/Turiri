@@ -37,4 +37,4 @@ const UserSchema = new mongoose.Schema({
     this.password = bcrypt.hashSync(this.password, 10);
     next();
 })*/
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Users', UserSchema);
